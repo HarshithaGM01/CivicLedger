@@ -147,7 +147,7 @@ function detailTemplate(grant, risk) {
       <div>
         <p class="eyebrow">${escapeHtml(grant.department)}</p>
         <h2>${escapeHtml(grant.name)}</h2>
-        <p>${escapeHtml(grant.fundingSource)} · ${formatDate(grant.startDate)} to ${formatDate(grant.endDate)}</p>
+        <p>${escapeHtml(grant.fundingSource)} - ${formatDate(grant.startDate)} to ${formatDate(grant.endDate)}</p>
       </div>
       <button class="icon-button" data-close-detail type="button" title="Close" aria-label="Close">
         <i data-lucide="x"></i>
@@ -171,7 +171,7 @@ function detailTemplate(grant, risk) {
         ${grant.auditEntries.map(entry => `
           <div class="audit-item">
             <strong>${escapeHtml(entry.action)}</strong>
-            <span>${escapeHtml(entry.details)} · ${new Date(entry.createdAtUtc).toLocaleString()}</span>
+            <span>${escapeHtml(entry.details)} - ${new Date(entry.createdAtUtc).toLocaleString()}</span>
           </div>
         `).join("")}
       </div>
