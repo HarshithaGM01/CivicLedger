@@ -99,14 +99,4 @@ Content-Type: application/json
 - CSV import/export and scheduled compliance reminders
 - Optional Azure OpenAI narrative summaries behind an `IRiskNarrativeService`
 
-## Resume description
 
-**CivicLedger - Municipal Grant and Budget Oversight Platform**
-
-- Built a full-stack municipal grant-management application using C#,
-  ASP.NET Core, Entity Framework Core, SQLite, REST APIs, HTML, CSS, and
-  JavaScript, with grant workflows, expense validation, dashboards, and
-  audit-history tracking.
-- Implemented explainable risk scoring, layered architecture, relational data
-  access, seeded demo data, OpenAPI documentation, xUnit tests, and GitHub
-  Actions CI for repeatable build and test validation.
