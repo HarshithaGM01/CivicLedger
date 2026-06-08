@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Municipal grant and budget oversight dashboard built with ASP.NET Core.">
+  <title>CivicLedger</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="CivicLedger home">
+      <span class="brand-mark">CL</span>
+      <span>CivicLedger</span>
+    </a>
+    <div class="topbar-actions">
+      <button class="icon-button" id="refreshButton" type="button" title="Refresh data" aria-label="Refresh data">
+        <i data-lucide="refresh-cw"></i>
+      </button>
+      <span class="environment"><span></span> Demo environment</span>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <nav aria-label="Primary navigation">
+        <a class="nav-item active" href="#overview"><i data-lucide="layout-dashboard"></i>Overview</a>
+        <a class="nav-item" href="#grants"><i data-lucide="landmark"></i>Grants</a>
+        <a class="nav-item" href="#departments"><i data-lucide="building-2"></i>Departments</a>
+      </nav>
+      <div class="sidebar-footer">
+        <span>FY <strong id="fiscalYear"></strong></span>
+        <a href="/openapi/v1.json" target="_blank" rel="noreferrer">
+          <i data-lucide="braces"></i>API schema
+        </a>
+      </div>
+    </aside>
+
+    <main>
+      <section class="page-heading" id="overview">
+        <div>
+          <p class="eyebrow">Financial oversight</p>
+          <h1>Grant portfolio</h1>
+          <p id="lastUpdated">Loading current portfolio data...</p>
+        </div>
+        <button class="primary-button" id="newGrantButton" type="button">
+          <i data-lucide="plus"></i>New grant
+        </button>
+      </section>
+
+      <section class="metrics" aria-label="Portfolio totals">
+        <article>
+          <span>Total awarded</span>
+          <strong id="totalAwarded">-</strong>
+          <small id="grantCount">-</small>
+        </article>
+        <article>
+          <span>Total spent</span>
+          <strong id="totalSpent">-</strong>
+          <small id="utilization">-</small>
+        </article>
+        <article>
+          <span>Active grants</span>
+          <strong id="activeGrants">-</strong>
+          <small>Currently reporting</small>
+        </article>
+        <article class="risk-metric">
+          <span>Needs attention</span>
+          <strong id="atRiskGrants">-</strong>
+          <small>High-risk grants</small>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel portfolio-panel" id="grants">
+          <div class="panel-header">
+            <div>
+              <h2>Grant register</h2>
+              <p>Budget, timeline, and compliance status</p>
+            </div>
+            <label class="search">
+              <i data-lucide="search"></i>
+              <input id="searchInput" type="search" placeholder="Search grants">
+            </label>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Grant</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th>Utilization</th>
+                  <th>End date</th>
+                  <th><span class="sr-only">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody id="grantRows"></tbody>
+            </table>
+          </div>
+          <div class="empty-state hidden" id="emptyState">
+            <i data-lucide="file-search"></i>
+            <p>No grants match this search.</p>
+          </div>
+        </div>
+
+        <aside class="panel department-panel" id="departments">
+          <div class="panel-header">
+            <div>
+              <h2>Departments</h2>
+              <p>Allocated and spent</p>
+            </div>
+          </div>
+          <div id="departmentList" class="department-list"></div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="grantDialog">
+    <form id="grantForm">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">Portfolio record</p>
+          <h2>Create grant</h2>
+        </div>
+        <button class="icon-button close-dialog" type="button" title="Close" aria-label="Close">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="form-grid">
+        <label class="span-2">Grant name<input name="name" required maxlength="140"></label>
+        <label>Department<input name="department" required maxlength="100"></label>
+        <label>Funding source<input name="fundingSource" required maxlength="120"></label>
+        <label>Awarded amount<input name="awardedAmount" type="number" min="1" step="0.01" required></label>
+        <label>Start date<input name="startDate" type="date" required></label>
+        <label>End date<input name="endDate" type="date" required></label>
+      </div>
+      <p class="form-error hidden" id="grantFormError"></p>
+      <div class="dialog-actions">
+        <button class="secondary-button close-dialog" type="button">Cancel</button>
+        <button class="primary-button" type="submit"><i data-lucide="save"></i>Create grant</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <div id="detailContent"></div>
+  </dialog>
+
+  <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

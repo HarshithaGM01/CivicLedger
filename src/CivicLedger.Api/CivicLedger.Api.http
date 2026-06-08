@@ -1,0 +1,28 @@
+@CivicLedger.Api_HostAddress = http://localhost:5270
+
+GET {{CivicLedger.Api_HostAddress}}/api/health
+Accept: application/json
+
+###
+
+GET {{CivicLedger.Api_HostAddress}}/api/dashboard
+Accept: application/json
+
+###
+
+GET {{CivicLedger.Api_HostAddress}}/api/grants
+Accept: application/json
+
+###
+
+POST {{CivicLedger.Api_HostAddress}}/api/grants
+Content-Type: application/json
+
+{
+  "name": "Neighborhood Safety Initiative",
+  "department": "Public Safety",
+  "fundingSource": "State Community Fund",
+  "awardedAmount": 250000,
+  "startDate": "2026-01-01",
+  "endDate": "2026-12-31"
+}
