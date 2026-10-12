@@ -74,6 +74,10 @@ grants.MapPost("/{id:guid}/activate", async (
         var grant = await service.ActivateAsync(id, cancellationToken);
         return grant is null ? Results.NotFound() : Results.Ok(grant);
     }
+    catch (DbUpdateConcurrencyException)
+    {
+        return Results.Conflict(new { error = "The grant changed. Reload it before trying again." });
+    }
     catch (InvalidOperationException exception)
     {
         return Results.Conflict(new { error = exception.Message });
@@ -97,6 +101,10 @@ grants.MapPost("/{id:guid}/expenses", async (
         {
             ["expense"] = [exception.Message]
         });
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        return Results.Conflict(new { error = "The grant changed. Reload it before trying again." });
     }
     catch (InvalidOperationException exception)
     {

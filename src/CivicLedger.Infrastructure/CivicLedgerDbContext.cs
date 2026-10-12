@@ -15,6 +15,8 @@ public sealed class CivicLedgerDbContext(DbContextOptions<CivicLedgerDbContext> 
         modelBuilder.Entity<Grant>(builder =>
         {
             builder.HasKey(grant => grant.Id);
+            builder.Property(grant => grant.Id).ValueGeneratedNever();
+            builder.Property(grant => grant.Version).IsConcurrencyToken();
             builder.Property(grant => grant.Name).HasMaxLength(140).IsRequired();
             builder.Property(grant => grant.Department).HasMaxLength(100).IsRequired();
             builder.Property(grant => grant.FundingSource).HasMaxLength(120).IsRequired();
@@ -43,6 +45,7 @@ public sealed class CivicLedgerDbContext(DbContextOptions<CivicLedgerDbContext> 
         modelBuilder.Entity<Expense>(builder =>
         {
             builder.HasKey(expense => expense.Id);
+            builder.Property(expense => expense.Id).ValueGeneratedNever();
             builder.Property(expense => expense.Amount).HasPrecision(18, 2);
             builder.Property(expense => expense.Category).HasMaxLength(80).IsRequired();
             builder.Property(expense => expense.Vendor).HasMaxLength(120).IsRequired();
@@ -52,6 +55,7 @@ public sealed class CivicLedgerDbContext(DbContextOptions<CivicLedgerDbContext> 
         modelBuilder.Entity<AuditEntry>(builder =>
         {
             builder.HasKey(entry => entry.Id);
+            builder.Property(entry => entry.Id).ValueGeneratedNever();
             builder.Property(entry => entry.Action).HasMaxLength(100).IsRequired();
             builder.Property(entry => entry.Details).HasMaxLength(600).IsRequired();
             builder.HasIndex(entry => new { entry.GrantId, entry.CreatedAtUtc });

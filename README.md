@@ -7,6 +7,8 @@ risk indicators, and audit history in one place.
 
 ![CivicLedger grant portfolio dashboard](docs/dashboard.png)
 
+**Status:** Portfolio prototype for synthetic data. No authentication or verified user adoption. See [reproduction, safety limits, and feedback plan](docs/VALIDATION.md).
+
 ## Highlights
 
 - REST API for grant creation, activation, expense reporting, dashboards, and

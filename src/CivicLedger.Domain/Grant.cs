@@ -17,9 +17,9 @@ public sealed class Grant
         DateOnly startDate,
         DateOnly endDate)
     {
-        if (awardedAmount <= 0)
+        if (awardedAmount <= 0 || awardedAmount != decimal.Round(awardedAmount, 2))
         {
-            throw new ArgumentOutOfRangeException(nameof(awardedAmount), "Awarded amount must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(awardedAmount), "Awarded amount must be positive and have at most two decimal places.");
         }
 
         if (endDate < startDate)
@@ -41,6 +41,7 @@ public sealed class Grant
     }
 
     public Guid Id { get; private set; }
+    public Guid Version { get; private set; } = Guid.NewGuid();
     public string Name { get; private set; } = string.Empty;
     public string Department { get; private set; } = string.Empty;
     public string FundingSource { get; private set; } = string.Empty;
@@ -112,7 +113,11 @@ public sealed class Grant
         RecordAudit("Risk status updated", explanation);
     }
 
-    private void Touch() => UpdatedAtUtc = DateTime.UtcNow;
+    private void Touch()
+    {
+        UpdatedAtUtc = DateTime.UtcNow;
+        Version = Guid.NewGuid();
+    }
 
     private void RecordAudit(string action, string details) =>
         _auditEntries.Add(new AuditEntry(Id, action, details));

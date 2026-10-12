@@ -8,9 +8,9 @@ public sealed class Expense
 
     public Expense(Guid grantId, decimal amount, string category, string vendor, DateOnly incurredOn)
     {
-        if (amount <= 0)
+        if (amount <= 0 || amount != decimal.Round(amount, 2))
         {
-            throw new ArgumentOutOfRangeException(nameof(amount), "Expense amount must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(amount), "Expense amount must be positive and have at most two decimal places.");
         }
 
         Id = Guid.NewGuid();
